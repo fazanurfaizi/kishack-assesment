@@ -1,26 +1,44 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
+const AuthLayout = () => import('@/layouts/AuthLayout.vue')
+
 const Login = () => import('@/views/auth/Login.vue')
 const ForgotPassword = () => import('@/views/auth/ForgotPassword.vue')
 const WaitingForgotPassword = () => import('@/views/auth/WaitingForgotPassword.vue')
+const ResetPassword = () => import('@/views/auth/ResetPassword.vue')
 
 const Dashboard = () => import('@/views/Dashboard.vue')
 
 const routes = [
     {
-        name: 'login',
-        path: '/login',
-        component: Login
-    },
-    {
-        name: 'forgot-password',
-        path: '/forgot-password',
-        component: ForgotPassword
-    },
-    {
-        name: 'waiting-forgot-password',
-        path: '/forgot-password/waiting',
-        component: WaitingForgotPassword
+        path: '/auth',
+        redirect: '/auth/login',
+        component: AuthLayout,
+        meta: {
+            middleware: 'guest'
+        },
+        children: [
+            {
+                name: 'login',
+                path: 'login',
+                component: Login
+            },
+            {
+                name: 'forgot-password',
+                path: 'forgot-password',
+                component: ForgotPassword
+            },
+            {
+                name: 'waiting-forgot-password',
+                path: 'forgot-password/waiting',
+                component: WaitingForgotPassword
+            },
+            {
+                name: 'reset-password',
+                path: 'reset-password',
+                component: ResetPassword
+            }
+        ]
     },
     {
         name: 'dashboard',
