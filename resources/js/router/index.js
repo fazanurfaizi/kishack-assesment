@@ -5,6 +5,7 @@ const AuthLayout = () => import('@/layouts/AuthLayout.vue')
 const Login = () => import('@/views/auth/Login.vue')
 const ForgotPassword = () => import('@/views/auth/ForgotPassword.vue')
 const WaitingForgotPassword = () => import('@/views/auth/WaitingForgotPassword.vue')
+const SuccessForgotPassword = () => import('@/views/auth/SuccessForgotPassword.vue')
 const ResetPassword = () => import('@/views/auth/ResetPassword.vue')
 
 const Dashboard = () => import('@/views/Dashboard.vue')
@@ -37,7 +38,12 @@ const routes = [
                 name: 'reset-password',
                 path: 'reset-password',
                 component: ResetPassword
-            }
+            },
+            {
+                name: 'success-forgot-password',
+                path: 'forgot-password/success',
+                component: SuccessForgotPassword
+            },
         ]
     },
     {
