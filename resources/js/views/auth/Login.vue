@@ -14,27 +14,51 @@
             <p class="text-center text-base text-gray">Enter your email and password to log in</p>
         </div>
 
-        <form class="row g-3 needs-validation d-flex justify-center" novalidate>
+        <form
+            action="#"
+            method="POST"
+            class="row g-3 needs-validation d-flex justify-center"
+            novalidate
+        >
+            <!-- <div class="col-12" v-if="Object.keys(validationErrors).length > 0">
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        <li v-for="(value, key) in validationErrors" :key="key">{{ value[0] }}</li>
+                    </ul>
+                </div>
+            </div> -->
+
             <div class="col-10">
-                <div class="input-group has-validation">
-                    <input type="email" name="email" class="form-control p-2 bg-transparent" id="email" placeholder="Email" required>
-                    <div class="invalid-feedback">Please enter your email.</div>
+                <div class="input-group">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        v-model="form.email"
+                        class="form-control p-2 bg-transparent"
+                        placeholder="Email"
+                        required
+                    >
                 </div>
             </div>
 
             <div class="col-10">
-                <div class="input-group has-validation">
+                <div class="input-group">
                     <input
-                        type="password"
-                        name="password"
-                        class="form-control p-2 bg-transparent border-end-0 border"
+                        :type="showPassword ? 'text' : 'password'"
                         id="password"
+                        name="password"
+                        v-model="form.password"
+                        class="form-control p-2 bg-transparent border-end-0 border"
                         placeholder="Password"
                         required
                     >
-                    <div class="invalid-feedback">Please enter your password.</div>
-                    <button class="input-group-text bg-transparent border-start-0 border">
-                        <span class="px-1" id="inputGroupApend">@</span>
+                    <button
+                        class="input-group-text bg-transparent border-start-0 border"
+                        type="button"
+                        @click.prevent="showPassword = !showPassword"
+                    >
+                        <font-awesome-icon :icon="showPassword ? 'eye-slash' : 'eye'" />
                     </button>
                 </div>
             </div>
@@ -51,7 +75,7 @@
                 <div class="d-flex justify-content-center">
                     <button class="btn btn-blue-gradient btn-lg w-25" type="submit">
                         <span class="text-sm">
-                            Login
+                            {{ loading ? 'Loading...' : 'Login' }}
                         </span>
                     </button>
                 </div>
@@ -61,14 +85,26 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref, reactive } from 'vue'
 import logo from '@/assets/images/Logo-Kishack-biru.svg?url'
 
 export default defineComponent({
     name: 'login-page',
     setup() {
+        const showPassword = ref(false)
+
+        const form = reactive({
+            email: '',
+            password: ''
+        })
+
+        const loading = ref(false)
+
         return {
-            logo
+            logo,
+            showPassword,
+            form,
+            loading
         }
     }
 })
