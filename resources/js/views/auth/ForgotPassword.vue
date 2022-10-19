@@ -16,8 +16,8 @@
                                 </div>
 
                                 <div class="mt-5 mb-5">
-                                    <h3 class="text-center pb-0 text-gray" style="font-weight: bold;">Sign In</h3>
-                                    <p class="text-center text-base text-gray">Enter your email and password to log in</p>
+                                    <h3 class="text-center pb-0 text-gray" style="font-weight: bold;">Forgot Password</h3>
+                                    <p class="text-center text-base text-gray">Enter your email and captcha to reset your password</p>
                                 </div>
 
                                 <form class="row g-3 needs-validation d-flex justify-center" novalidate>
@@ -29,37 +29,29 @@
                                     </div>
 
                                     <div class="col-10">
-                                        <div class="input-group has-validation">
-                                            <input
-                                                type="password"
-                                                name="password"
-                                                class="form-control p-2 bg-transparent border-end-0 border"
-                                                id="password"
-                                                placeholder="Password"
-                                                required
-                                            >
-                                            <div class="invalid-feedback">Please enter your password.</div>
-                                            <button class="input-group-text bg-transparent border-start-0 border">
-                                                <span class="px-1" id="inputGroupApend">@</span>
-                                            </button>
+                                        <div class="d-flex justify-content-center">
+                                            <vue-recaptcha sitekey="6LdRjpIiAAAAAK6qDgrZSTLzhtvJ8XnqlzpQgyie"></vue-recaptcha>
                                         </div>
                                     </div>
 
-                                    <div class="col-10">
-                                        <div class="d-flex justify-content-end">
-                                            <router-link :to="{name: 'forgot-password'}" style="font-weight: bold;">
-                                                Forgot Password ?
-                                            </router-link>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 mb-5">
+                                    <div class="col-12">
                                         <div class="d-flex justify-content-center">
                                             <button class="btn btn-blue-gradient btn-lg w-25" type="submit">
                                                 <span class="text-sm">
-                                                    Login
+                                                    Verification
                                                 </span>
                                             </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-10 mt-4">
+                                        <div class="d-flex justify-content-center">
+                                            <span class="text-gray">
+                                                Do you already have an account ?
+                                            </span>
+                                            <router-link :to="{name: 'dashboard'}" class="ml-1" style="font-weight: bold;">
+                                                Login
+                                            </router-link>
                                         </div>
                                     </div>
                                 </form>
@@ -80,9 +72,13 @@
 import { defineComponent } from 'vue'
 import logo from '@/assets/images/Logo-Kishack-biru.svg?url'
 import background from '@/assets/images/auth-bg.svg?url'
+import { VueRecaptcha } from 'vue-recaptcha';
 
 export default defineComponent({
-    name: 'login-page',
+    name: 'forgot-password-page',
+    components: {
+        VueRecaptcha
+    },
     setup() {
         return {
             logo,
