@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 
 const Login = () => import('@/views/auth/Login.vue')
 const ForgotPassword = () => import('@/views/auth/ForgotPassword.vue')
+const WaitingForgotPassword = () => import('@/views/auth/WaitingForgotPassword.vue')
 
 const Dashboard = () => import('@/views/Dashboard.vue')
 
@@ -15,6 +16,11 @@ const routes = [
         name: 'forgot-password',
         path: '/forgot-password',
         component: ForgotPassword
+    },
+    {
+        name: 'waiting-forgot-password',
+        path: '/forgot-password/waiting',
+        component: WaitingForgotPassword
     },
     {
         name: 'dashboard',
