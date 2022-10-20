@@ -60,11 +60,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::put('/{article}', [ArticleController::class, 'update']);
         Route::patch('/', [ArticleController::class, 'destroy']);
     });
-});
-Route::group(['prefix' => 'users'], function() {
-    Route::get('/', [UserController::class, 'index']);
-    Route::post('/', [UserController::class, 'store']);
-    Route::get('/{user}', [UserController::class, 'show']);
-    Route::put('/{user}', [UserController::class, 'update']);
-    Route::patch('/', [UserController::class, 'destroy']);
+
+    Route::group(['prefix' => 'users'], function() {
+        Route::get('/', [UserController::class, 'index']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::get('/{user}', [UserController::class, 'show']);
+        Route::put('/{user}', [UserController::class, 'update']);
+        Route::patch('/', [UserController::class, 'destroy']);
+    });
 });
