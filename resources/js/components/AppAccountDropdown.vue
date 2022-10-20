@@ -23,7 +23,7 @@
                 <CIcon icon="cil-user" /> Profile
             </CDropdownItem>
 
-            <CDropdownItem>
+            <CDropdownItem @click="logout()">
                 <CIcon icon="cil-lock-locked" /> Logout
             </CDropdownItem>
         </CDropdownMenu>
@@ -31,16 +31,23 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
 import UserIcon from '@/assets/icons/user-icon.svg?component'
+
 export default {
     name: 'AppAccountDropdown',
     components: {
         UserIcon
     },
     setup() {
+        const store = useStore()
+
+        const logout = () => {
+            store.dispatch('auth/logout')
+        }
+
         return {
-            // avatar: avatar,
-            itemsCount: 42,
+            logout
         }
     },
 }

@@ -24,7 +24,7 @@ export default {
         }
     },
     actions: {
-        login({commit}) {
+        login({ commit }) {
             return new Promise(async (resolve, reject) => {
                 await axios.get('/api/profile')
                     .then((response) => {
@@ -40,9 +40,23 @@ export default {
                     })
             })
         },
-        logout({commit}) {
-            commit('setUser', null)
-            commit('setAuthenticated', false)
+        logout({ commit }) {
+            return new Promise(async (resolve, reject) => {
+                await axios.get('/sanctum/csrf-cookie').then(async () => {
+                    await axios.get('/logout')
+                        .then((response) => {
+                            commit('setUser', null)
+                            commit('setAuthenticated', false)
+                            return resolve(response)
+                        })
+                        .catch((error) => {
+                            commit('setUser', null)
+                            commit('setAuthenticated', false)
+                            return reject(error)
+                        })
+                        .finally(() => router.push({ name: 'login' }))
+                })
+            })
         }
     }
 }

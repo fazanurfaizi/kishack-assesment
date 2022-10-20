@@ -16,7 +16,7 @@
   import { CContainer } from '@coreui/vue'
   import AppFooter from '@/components/AppFooter.vue'
   import AppHeader from '@/components/AppHeader.vue'
-  import AppSidebar from '@/components/AppSidebar.vue'
+  import AppSidebar from '@/components/Sidebar/AppSidebar.vue'
   export default {
     name: 'DefaultLayout',
     components: {

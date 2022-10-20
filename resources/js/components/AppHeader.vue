@@ -24,13 +24,12 @@
                         <CIcon class="mx-2 text-white" icon="cil-bell" size="lg" />
                     </CNavLink>
                 </CNavItem>
-                <CNavItem>
+                <!-- <CNavItem>
                     <CNavLink href="#">
                         <CIcon class="mx-2 text-white" icon="cil-user" size="lg" />
-                        <!-- <img :src="UserIcon" class="mt-3" /> -->
                     </CNavLink>
-                </CNavItem>
-                <!-- <AppAccountDropdown /> -->
+                </CNavItem> -->
+                <AppAccountDropdown />
             </CHeaderNav>
         </CContainer>
     </CHeader>

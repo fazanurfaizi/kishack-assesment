@@ -41,8 +41,8 @@ const isActiveItem = (route, item) => {
     return false
 }
 
-export const AppSidebarNav = defineComponent({
-    name: 'AppSidebarNav',
+export const AppSidebarItem = defineComponent({
+    name: 'AppSidebarItem',
     components: {
         CNavItem,
         CNavGroup,

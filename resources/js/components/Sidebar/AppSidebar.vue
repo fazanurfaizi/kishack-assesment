@@ -20,14 +20,14 @@
             </div>
         </CSidebarBrand>
 
-        <AppSidebarNav />
+        <AppSidebarItem />
     </CSidebar>
 </template>
 
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { AppSidebarNav } from './AppSidebarNav'
+import { AppSidebarItem } from './AppSidebarItem'
 import { logoNegative } from '@/assets/brand/logo-negative'
 import { sygnet } from '@/assets/brand/sygnet'
 import Logo from '@/assets/images/Logo-Kishack-biru.svg?component'
@@ -35,7 +35,7 @@ import Logo from '@/assets/images/Logo-Kishack-biru.svg?component'
 export default {
     name: 'AppSidebar',
     components: {
-        AppSidebarNav,
+        AppSidebarItem,
         Logo
     },
     setup() {
