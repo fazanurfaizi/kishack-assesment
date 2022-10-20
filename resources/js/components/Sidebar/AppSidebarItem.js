@@ -7,7 +7,7 @@ import {
     CNavGroup,
     CNavTitle,
 } from '@coreui/vue'
-import nav from '@/_nav.js'
+import routes from './routes.js'
 
 const normalizePath = (path) =>
   decodeURI(path)
@@ -132,7 +132,7 @@ export const AppSidebarItem = defineComponent({
                 CSidebarNav,
                 {},
                 {
-                    default: () => nav.map((item) => renderItem(item)),
+                    default: () => routes.map((item) => renderItem(item)),
                 },
             )
     },

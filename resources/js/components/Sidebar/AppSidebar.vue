@@ -28,8 +28,6 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { AppSidebarItem } from './AppSidebarItem'
-import { logoNegative } from '@/assets/brand/logo-negative'
-import { sygnet } from '@/assets/brand/sygnet'
 import Logo from '@/assets/images/Logo-Kishack-biru.svg?component'
 
 export default {
@@ -41,8 +39,6 @@ export default {
     setup() {
         const store = useStore()
         return {
-            logoNegative,
-            sygnet,
             sidebarUnfoldable: computed(() => store.state.app.sidebarUnfoldable),
             sidebarVisible: computed(() => store.state.app.sidebarVisible),
         }

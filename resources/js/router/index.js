@@ -78,6 +78,70 @@ const constantRoutes = [
                 meta: {
                     title: 'Dashboard'
                 }
+            },
+            {
+                name: 'users',
+                path: 'users',
+                component: () => import('@/views/user-management/users.vue'),
+                meta: {
+                    title: 'Users'
+                }
+            },
+            {
+                name: 'roles',
+                path: 'roles',
+                component: () => import('@/views/user-management/roles.vue'),
+                meta: {
+                    title: 'Roles'
+                }
+            },
+            {
+                name: 'permissions',
+                path: 'permissions',
+                component: () => import('@/views/user-management/permissions.vue'),
+                meta: {
+                    title: 'Permissions'
+                }
+            },
+            {
+                name: 'list-articles',
+                path: 'articles',
+                component: () => import('@/views/article/index.vue'),
+                meta: {
+                    title: 'List Articles'
+                }
+            },
+            {
+                name: 'create-articles',
+                path: 'articles/create',
+                component: () => import('@/views/article/create.vue'),
+                meta: {
+                    title: 'Create Article'
+                }
+            },
+            {
+                name: 'show-articles',
+                path: 'articles/:id(\\d+)',
+                component: () => import('@/views/article/show.vue'),
+                meta: {
+                    title: 'Show Articles'
+                }
+            },
+            {
+                name: 'articles',
+                path: 'articles/:id/edit',
+                component: () => import('@/views/article/edit.vue'),
+                meta: {
+                    title: 'Edit Article'
+                }
+            },
+            {
+                name: 'categories',
+                path: 'categories',
+                component: () => import('@/views/category/index.vue'),
+                meta: {
+                    title: 'Categories'
+                }
             }
         ]
     }
