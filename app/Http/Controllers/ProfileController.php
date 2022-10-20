@@ -17,7 +17,7 @@ class ProfileController extends Controller
     public function show()
     {
         $user = User::query()
-            ->with(['role'])
+            ->with(['role.permissions'])
             ->findOrFail(Auth::id());
 
         return response()->json([

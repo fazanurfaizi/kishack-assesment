@@ -42,4 +42,3 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::patch('/', [PermissionController::class, 'destroy']);
     });
 });
-

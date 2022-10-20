@@ -1,8 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import store from '@/store'
 
-import AppLayout from '@/layouts/AppLayout.vue'
-
 const AuthLayout = () => import('@/layouts/AuthLayout.vue')
 
 const Login = () => import('@/views/auth/Login.vue')
@@ -64,23 +62,14 @@ const routes = [
             },
         ]
     },
-
     {
+        name: 'dashboard',
         path: '/',
-        component: AppLayout,
-        redirect: '/dashboard',
-        children: [
-            {
-                path: 'dashboard',
-                name: 'Dashboard',
-                component: Dashboard,
-                meta: {
-                    title: 'Dashboard',
-                    icon: 'dashboard'
-                }
-            }
-        ]
-    },
+        component: Dashboard,
+        meta: {
+            title: 'Dashboard'
+        }
+    }
 ]
 
 const router = createRouter({

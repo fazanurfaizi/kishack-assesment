@@ -23,11 +23,11 @@ class UpdatePermissionRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->route('id');
+        $permission = $this->route('permission');
 
         return [
-            'name' => 'required|string|unique:permissions,name,' . $id,
-            'slug' => 'required|string|unique:permissions,slug,' . $id,
+            'name' => 'required|string|unique:permissions,name,' . $permission->id,
+            'slug' => 'required|string|unique:permissions,slug,' . $permission->id,
         ];
     }
 }

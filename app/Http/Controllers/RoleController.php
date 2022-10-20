@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
@@ -35,11 +38,21 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        Role::create($request->validated());
+        try {
+            DB::beginTransaction();
 
-        return response()->json([
-            'message' => 'Role created successfully'
-        ]);
+            $role = Role::create($request->validated());
+
+            $role->permissions()->sync($request->input('permissions'));
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Role created successfully'
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
     }
 
     /**
@@ -50,6 +63,8 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
+        $role->load('permissions');
+
         return response()->json([
             'data' => $role
         ]);
@@ -64,11 +79,25 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        $role->update($request->validated());
+        try {
+            DB::beginTransaction();
 
-        return response()->json([
-            'message' => 'Role updated successfully'
-        ]);
+            $role->update($request->validated());
+
+            $role->permissions()->sync($request->input('permissions'));
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Role updated successfully'
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
