@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -59,4 +60,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::put('/{article}', [ArticleController::class, 'update']);
         Route::patch('/', [ArticleController::class, 'destroy']);
     });
+});
+Route::group(['prefix' => 'users'], function() {
+    Route::get('/', [UserController::class, 'index']);
+    Route::post('/', [UserController::class, 'store']);
+    Route::get('/{user}', [UserController::class, 'show']);
+    Route::put('/{user}', [UserController::class, 'update']);
+    Route::patch('/', [UserController::class, 'destroy']);
 });
