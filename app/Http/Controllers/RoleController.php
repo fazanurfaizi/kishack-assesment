@@ -5,27 +5,26 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $roles = Role::query()
+            ->when($request->filled('search'), fn ($q) => $q->where('name', 'LIKE', "%{$request->get('search')}%"))
+            ->latest()
+            ->paginate($request->get('limit'));
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json([
+            'data' => $roles
+        ]);
     }
 
     /**
@@ -36,7 +35,11 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        //
+        Role::create($request->validated());
+
+        return response()->json([
+            'message' => 'Role created successfully'
+        ]);
     }
 
     /**
@@ -47,18 +50,9 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Role $role)
-    {
-        //
+        return response()->json([
+            'data' => $role
+        ]);
     }
 
     /**
@@ -70,17 +64,27 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        $role->update($request->validated());
+
+        return response()->json([
+            'message' => 'Role updated successfully'
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Role  $role
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(Request $request)
     {
-        //
+        Role::query()
+            ->whereIn('id', $request->post('ids'))
+            ->delete();
+
+        return response()->json([
+            'message' => 'Selected roles deleted successfully'
+        ]);
     }
 }
