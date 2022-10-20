@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -43,12 +44,19 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::patch('/', [PermissionController::class, 'destroy']);
     });
 
-});
+    Route::group(['prefix' => 'categories'], function() {
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::get('/{category}', [CategoryController::class, 'show']);
+        Route::put('/{category}', [CategoryController::class, 'update']);
+        Route::patch('/', [CategoryController::class, 'destroy']);
+    });
 
-Route::group(['prefix' => 'categories'], function() {
-    Route::get('/', [CategoryController::class, 'index']);
-    Route::post('/', [CategoryController::class, 'store']);
-    Route::get('/{category}', [CategoryController::class, 'show']);
-    Route::put('/{category}', [CategoryController::class, 'update']);
-    Route::patch('/', [CategoryController::class, 'destroy']);
+    Route::group(['prefix' => 'articles'], function() {
+        Route::get('/', [ArticleController::class, 'index']);
+        Route::post('/', [ArticleController::class, 'store']);
+        Route::get('/{article}', [ArticleController::class, 'show']);
+        Route::put('/{article}', [ArticleController::class, 'update']);
+        Route::patch('/', [ArticleController::class, 'destroy']);
+    });
 });
