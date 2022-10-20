@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
+import store from '@/store'
 
 const AuthLayout = () => import('@/layouts/AuthLayout.vue')
 
@@ -22,34 +23,52 @@ const routes = [
             {
                 name: 'login',
                 path: 'login',
-                component: Login
+                component: Login,
+                meta: {
+                    title: 'Login'
+                }
             },
             {
                 name: 'forgot-password',
                 path: 'forgot-password',
-                component: ForgotPassword
+                component: ForgotPassword,
+                meta: {
+                    title: 'Forgot Password'
+                }
             },
             {
                 name: 'waiting-forgot-password',
                 path: 'forgot-password/waiting',
-                component: WaitingForgotPassword
+                component: WaitingForgotPassword,
+                meta: {
+                    title: 'Forgot Password'
+                }
             },
             {
                 name: 'reset-password',
                 path: 'reset-password',
-                component: ResetPassword
+                component: ResetPassword,
+                meta: {
+                    title: 'Reset Password'
+                }
             },
             {
                 name: 'success-forgot-password',
                 path: 'forgot-password/success',
-                component: SuccessForgotPassword
+                component: SuccessForgotPassword,
+                meta: {
+                    title: 'Forgot Password'
+                }
             },
         ]
     },
     {
         name: 'dashboard',
         path: '/',
-        component: Dashboard
+        component: Dashboard,
+        meta: {
+            title: 'Dashboard'
+        }
     }
 ]
 
@@ -58,20 +77,20 @@ const router = createRouter({
     routes,
 })
 
-// router.beforeEach((to, from, next) => {
-//     document.title = to.meta.title
-//     if (to.meta.middleware == "guest") {
-//         if (store.state.auth.authenticated) {
-//             next({ name: "dashboard" })
-//         }
-//         next()
-//     } else {
-//         if (store.state.auth.authenticated) {
-//             next()
-//         } else {
-//             next({ name: "login" })
-//         }
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    document.title = `${document.title} - ${to.meta.title}`
+    if (to.meta.middleware == "guest") {
+        if (store.state.auth.authenticated) {
+            next({ name: "dashboard" })
+        }
+        next()
+    } else {
+        if (store.state.auth.authenticated) {
+            next()
+        } else {
+            next({ name: "login" })
+        }
+    }
+})
 
 export default router

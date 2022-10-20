@@ -73,7 +73,12 @@
 
             <div class="col-12 mb-5">
                 <div class="d-flex justify-content-center">
-                    <button class="btn btn-blue-gradient btn-lg w-25" type="submit">
+                    <button
+                        class="btn btn-blue-gradient btn-lg w-25"
+                        type="submit"
+                        @click.prevent="handleLogin()"
+                        :disabled="loading"
+                    >
                         <span class="text-sm">
                             {{ loading ? 'Loading...' : 'Login' }}
                         </span>
@@ -86,11 +91,15 @@
 
 <script>
 import { defineComponent, ref, reactive } from 'vue'
+import { useStore } from 'vuex'
 import logo from '@/assets/images/Logo-Kishack-biru.svg?url'
+import axios from 'axios'
 
 export default defineComponent({
     name: 'login-page',
     setup() {
+        const store = useStore()
+
         const showPassword = ref(false)
 
         const form = reactive({
@@ -100,11 +109,28 @@ export default defineComponent({
 
         const loading = ref(false)
 
+        const handleLogin = async () => {
+            loading.value = true
+            await axios.get('/sanctum/csrf-cookie').then(async () => {
+                await axios.post('/login', form).then((response) => {
+                    console.log(response)
+                    store.dispatch('auth/login')
+                }).catch((error) => {
+                    if(error.response.status === 422) {
+                        console.log(error)
+                    } else {
+                        console.log('internal error')
+                    }
+                }).finally(() => loading.value = true)
+            })
+        }
+
         return {
             logo,
             showPassword,
             form,
-            loading
+            loading,
+            handleLogin
         }
     }
 })
