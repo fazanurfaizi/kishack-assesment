@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -41,4 +42,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::put('/{permission}', [PermissionController::class, 'update']);
         Route::patch('/', [PermissionController::class, 'destroy']);
     });
+
+});
+
+Route::group(['prefix' => 'categories'], function() {
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::post('/', [CategoryController::class, 'store']);
+    Route::get('/{category}', [CategoryController::class, 'show']);
+    Route::put('/{category}', [CategoryController::class, 'update']);
+    Route::patch('/', [CategoryController::class, 'destroy']);
 });
