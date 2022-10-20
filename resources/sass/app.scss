@@ -7,6 +7,8 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
+@import "@coreui/coreui/scss/coreui";
+
 // Form
 @import 'form.scss';
 
@@ -16,3 +18,5 @@
 @import 'sidebar.scss';
 
 @import 'transition.scss';
+
+@import 'layout.scss';

@@ -1,0 +1,12 @@
+.wrapper {
+    width: 100%;
+    @include ltr-rtl("padding-left", var(--cui-sidebar-occupy-start, 0));
+    will-change: auto;
+    @include transition(padding .15s);
+}
+
+.bg-blue-gradient {
+    background: #003761;
+    background: -webkit-linear-gradient(to right, #006EC0, #003761);
+    background: linear-gradient(122.52deg, #006EC0 2.45%, #00345A 95.05%);
+}

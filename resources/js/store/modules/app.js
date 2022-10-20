@@ -1,44 +1,20 @@
 export default {
     namespaced: true,
     state: {
-        sidebar: {
-            opened: localStorage.getItem('sidebarStatus') ? !!localStorage.getItem('sidebarStatus') : true,
-            withoutAnimation: false
-        },
-        device: 'desktop'
+        sidebarVisible: '',
+        sidebarUnfoldable: false,
     },
-    getters: {
-        sidebar: state => state.sidebar,
-        device: state => state.device
-    },
+    getters: {},
     mutations: {
         toggleSidebar(state) {
-            state.sidebar.opened = !state.sidebar.opened
-            state.sidebar.withoutAnimation = false
-            if(state.sidebar.opened) {
-                localStorage.setItem('sidebarStatus', 1)
-            } else {
-                localStorage.setItem('sidebarStatus', 0)
-            }
+            state.sidebarVisible = !state.sidebarVisible
         },
-        closeSidebar(state, payload) {
-            localStorage.setItem('sidebarStatus', 0)
-            state.sidebar.opened = false
-            state.sidebar.withoutAnimation = payload
+        toggleUnfoldable(state) {
+            state.sidebarUnfoldable = !state.sidebarUnfoldable
         },
-        toggleDevice(state, payload) {
-            state.device = payload
-        }
+        updateSidebarVisible(state, payload) {
+            state.sidebarVisible = payload.value
+        },
     },
-    actions: {
-        toggleSidebar({ commit }) {
-            commit('toggleSidebar')
-        },
-        closeSidebar({ commit }, payload) {
-            commit('closeSidebar', payload.withoutAnimation)
-        },
-        toggleDevice({ commit }, payload) {
-            commit('toggleDevice', payload)
-        }
-    }
+    actions: {}
 }

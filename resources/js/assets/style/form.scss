@@ -1,0 +1,13 @@
+.btn-blue-gradient {
+    background: #003761;
+    background: -webkit-linear-gradient(to right, #0390F9, #003761);
+    background: linear-gradient(to right, #0390F9, #003761);
+    color: #fff;
+    border: 3px solid #eee;
+}
+
+.btn-blue-gradient:hover {
+    color: var(--bs-btn-hover-color);
+    background-color: var(--bs-btn-hover-bg);
+    border-color: #0390F9;
+}

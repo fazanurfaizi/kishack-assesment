@@ -1,7 +1,8 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import store from '@/store'
 
-const AuthLayout = () => import('@/layouts/AuthLayout.vue')
+import AppLayout from '@/layouts/AppLayout.vue'
+import AuthLayout from '@/layouts/AuthLayout.vue'
 
 const Login = () => import('@/views/auth/Login.vue')
 const ForgotPassword = () => import('@/views/auth/ForgotPassword.vue')
@@ -11,7 +12,7 @@ const ResetPassword = () => import('@/views/auth/ResetPassword.vue')
 
 const Dashboard = () => import('@/views/Dashboard.vue')
 
-const routes = [
+const constantRoutes = [
     {
         path: '/auth',
         redirect: '/auth/login',
@@ -63,18 +64,28 @@ const routes = [
         ]
     },
     {
-        name: 'dashboard',
-        path: '/',
-        component: Dashboard,
+        path: '',
+        component: AppLayout,
+        redirect: 'dashboard',
         meta: {
-            title: 'Dashboard'
-        }
+            middleware: 'auth'
+        },
+        children: [
+            {
+                name: 'dashboard',
+                path: 'dashboard',
+                component: Dashboard,
+                meta: {
+                    title: 'Dashboard'
+                }
+            }
+        ]
     }
 ]
 
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes: constantRoutes,
 })
 
 router.beforeEach((to, from, next) => {
@@ -92,5 +103,10 @@ router.beforeEach((to, from, next) => {
         }
     }
 })
+
+export function resetRouter() {
+    const newRouter = createRouter();
+    router.matcher = newRouter.matcher; // reset router
+}
 
 export default router
