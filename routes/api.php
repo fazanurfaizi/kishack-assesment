@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
@@ -32,4 +33,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::put('/{role}', [RoleController::class, 'update']);
         Route::patch('/', [RoleController::class, 'destroy']);
     });
+
+    Route::group(['prefix' => 'permissions'], function() {
+        Route::get('/', [PermissionController::class, 'index']);
+        Route::post('/', [PermissionController::class, 'store']);
+        Route::get('/{permission}', [PermissionController::class, 'show']);
+        Route::put('/{permission}', [PermissionController::class, 'update']);
+        Route::patch('/', [PermissionController::class, 'destroy']);
+    });
 });
+
