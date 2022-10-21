@@ -1,8 +1,8 @@
 <template>
     <div class="row">
-        <div class="col-9">
+        <div class="col-12 col-lg-9">
             <div class="row">
-                <div class="col-7">
+                <div class="col-md-7 col-12">
                     <el-input
                         v-model="searchQuery"
                         placeholder="Search article..."
@@ -10,7 +10,7 @@
                         size="large"
                     />
                 </div>
-                <div class="col-2">
+                <div class="col-md-2 col-6">
                     <select class="form-control py-2 block" v-model="category" @change="handleChangeCategory">
                         <option value="" disabled selected>Categories</option>
                         <option v-for="(category, index) in categories" :value="category.id" :key="index">
@@ -18,9 +18,9 @@
                         </option>
                     </select>
                 </div>
-                <button @click="createArticle" class="col-2 btn btn-blue-gradient d-flex py-2">
+                <button @click="createArticle" class="col-md-2 col-6 btn btn-blue-gradient d-flex py-2">
                     Create Article
-                    <svg style="width: 20px;" class="ml-2" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa=""><path d="m199.04 672.64 193.984 112 224-387.968-193.92-112-224 388.032zm-23.872 60.16 32.896 148.288 144.896-45.696L175.168 732.8zM455.04 229.248l193.92 112 56.704-98.112-193.984-112-56.64 98.112zM104.32 708.8l384-665.024 304.768 175.936L409.152 884.8h.064l-248.448 78.336L104.32 708.8zm384 254.272v-64h448v64h-448z" fill="currentColor"></path></svg>
+                    <svg style="width: 20px;" class="ml-2 d-none d-md-block" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa=""><path d="m199.04 672.64 193.984 112 224-387.968-193.92-112-224 388.032zm-23.872 60.16 32.896 148.288 144.896-45.696L175.168 732.8zM455.04 229.248l193.92 112 56.704-98.112-193.984-112-56.64 98.112zM104.32 708.8l384-665.024 304.768 175.936L409.152 884.8h.064l-248.448 78.336L104.32 708.8zm384 254.272v-64h448v64h-448z" fill="currentColor"></path></svg>
                 </button>
             </div>
 
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-3 mt-2 px-2">
+        <div class="col-12 col-lg-3 mt-2 px-2">
             <div id="your-article">
                 <h5 class="text-black">Your Article</h5>
                 <template v-for="(article, index) in myArticles" :key="index">
@@ -99,6 +99,7 @@
 
 <script>
 import { defineComponent, watch, ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import { debounce } from '@/utils/index.js'
@@ -107,6 +108,7 @@ import moment from 'moment'
 export default defineComponent({
     name: 'dashboard',
     setup() {
+        const store = useStore()
         const router = useRouter()
         const categories = ref([]);
 
@@ -168,6 +170,11 @@ export default defineComponent({
         }
 
         onMounted(() => {
+            store.commit('app/setBreadcrumb', {
+                title: 'Article',
+                subtitle: 'Explore now...'
+            })
+
             handleGetCategories()
             handleGetArticles()
             handleGetMyArticles()

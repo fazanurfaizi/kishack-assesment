@@ -45,6 +45,7 @@
 
 <script>
 import axios from 'axios'
+import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
 import ImageUpload from '../../components/ImageUpload.vue'
@@ -55,6 +56,8 @@ export default {
         ImageUpload
     },
     setup() {
+        const store = useStore()
+
         const router = useRouter()
 
         const route = useRoute()
@@ -81,10 +84,10 @@ export default {
         const handleGetDetailArticle = async () => {
             await axios.get('sanctum/csrf-cookie').then(async () => {
                 await axios.get(`/api/articles/${route.params.id}`).then((response) => {
-                    form.title = response.data.data.title
-                    form.content = response.data.data.content
-                    form.category_id = response.data.data.category_id
-                    imageUrl.value = response.data.data.image_url
+                    form.title = response.data.article.title
+                    form.content = response.data.article.content
+                    form.category_id = response.data.article.category_id
+                    imageUrl.value = response.data.article.image_url
                 })
             })
         }
@@ -122,6 +125,11 @@ export default {
         }
 
         onMounted(() => {
+            store.commit('app/setBreadcrumb', {
+                title: 'Article',
+                subtitle: 'Edit Article'
+            })
+
             handleGetCategories()
             handleGetDetailArticle()
         })

@@ -14,7 +14,6 @@
                     <span class="bg-secondary p-1 px-2 rounded">
                         {{ article.category.name }}
                     </span>
-                    <!-- <a class="btn btn-primary" href="#!">Read more →</a> -->
                 </div>
             </div>
 
@@ -88,6 +87,7 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
 import { defineComponent, watch, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
@@ -96,8 +96,12 @@ import moment from 'moment'
 export default defineComponent({
     name: 'dashboard',
     setup() {
+        const store = useStore()
+
         const route = useRoute()
+
         const router = useRouter()
+
         const categories = ref([]);
 
         const article = ref(null)
@@ -140,6 +144,11 @@ export default defineComponent({
         }
 
         onMounted(() => {
+            store.commit('app/setBreadcrumb', {
+                title: 'Article',
+                subtitle: 'Detail Article'
+            })
+
             handleGetCategories()
             handleGetArticle()
             handleGetMyArticles()

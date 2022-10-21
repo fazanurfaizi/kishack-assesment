@@ -7,8 +7,8 @@
 
             <CHeaderNav class="d-none d-md-flex me-auto mx-4">
                 <CNavItem>
-                    <h3 class="mb-0 pb-0 text-white">Article</h3>
-                    <span class="mt-0 pt-0 text-white">Explore now...</span>
+                    <h3 class="mb-0 pb-0 text-white">{{ breadcrumb.title }}</h3>
+                    <span class="mt-0 pt-0 text-white">{{ breadcrumb.subtitle }}</span>
                 </CNavItem>
             </CHeaderNav>
 
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import AppAccountDropdown from './AppAccountDropdown.vue'
 import BellIcon from '@/assets/icons/bell-icon.svg?component'
 import UserIcon from '@/assets/icons/user-icon.svg?url'
@@ -41,8 +43,13 @@ export default {
         BellIcon,
     },
     setup() {
+        const store = useStore()
+
+        const breadcrumb = computed(() => store.getters['app/breadcrumb'])
+
         return {
-            UserIcon
+            UserIcon,
+            breadcrumb
         }
     },
 }

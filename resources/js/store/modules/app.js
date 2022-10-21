@@ -3,8 +3,16 @@ export default {
     state: {
         sidebarVisible: '',
         sidebarUnfoldable: false,
+        breadcrumb: {
+            title: '',
+            subtitle: ''
+        }
     },
-    getters: {},
+    getters: {
+        breadcrumb(state) {
+            return state.breadcrumb
+        }
+    },
     mutations: {
         toggleSidebar(state) {
             state.sidebarVisible = !state.sidebarVisible
@@ -15,6 +23,9 @@ export default {
         updateSidebarVisible(state, payload) {
             state.sidebarVisible = payload.value
         },
+        setBreadcrumb(state, payload) {
+            state.breadcrumb = payload
+        }
     },
     actions: {}
 }

@@ -104,6 +104,7 @@
 <script>
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
 import { Search, Refresh, EditPen, View, Delete } from '@element-plus/icons-vue'
 import axios from 'axios'
@@ -112,6 +113,8 @@ import { debounce, formatDate } from '@/utils/index.js'
 export default {
     name: 'articles',
     setup() {
+        const store = useStore()
+
         const router = useRouter()
 
         const loading = ref(false)
@@ -229,6 +232,11 @@ export default {
         }
 
         onMounted(() => {
+            store.commit('app/setBreadcrumb', {
+                title: 'Article',
+                subtitle: 'Articles List'
+            })
+
             handleGetArticles()
         })
 

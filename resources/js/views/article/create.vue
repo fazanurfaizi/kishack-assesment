@@ -45,6 +45,7 @@
 
 <script>
 import axios from 'axios'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
 import ImageUpload from '../../components/ImageUpload.vue'
@@ -55,6 +56,7 @@ export default {
         ImageUpload
     },
     setup() {
+        const store = useStore()
         const router = useRouter();
         const form = reactive({
             title: "",
@@ -95,6 +97,11 @@ export default {
             });
         };
         onMounted(() => {
+            store.commit('app/setBreadcrumb', {
+                title: 'Article',
+                subtitle: 'Create Article'
+            })
+
             handleGetCategories();
         });
         return {

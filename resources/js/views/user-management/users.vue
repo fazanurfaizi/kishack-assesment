@@ -200,6 +200,7 @@
 
 <script>
 import { ref, reactive, onMounted, watch } from 'vue'
+import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
 import { Search, Refresh, EditPen, View, Delete } from '@element-plus/icons-vue'
 import axios from 'axios'
@@ -208,6 +209,8 @@ import { debounce, formatDate } from '@/utils/index.js'
 export default {
     name: 'users',
     setup() {
+        const store = useStore()
+
         const loading = ref(false)
 
         const tableData = ref([])
@@ -355,7 +358,12 @@ export default {
                     .finally(() => {
                         loading.value = false
                         formVisible.value = false
-                        form = null
+                        form.name = ''
+                        form.username = ''
+                        form.email = ''
+                        form.image = ''
+                        form.password = ''
+                        form.role_id = ''
                     })
             })
         }
@@ -474,6 +482,11 @@ export default {
         }
 
         onMounted(() => {
+            store.commit('app/setBreadcrumb', {
+                title: 'User management',
+                subtitle: 'Users list'
+            })
+
             handleGetUsers()
             handleGetRoles()
         })
