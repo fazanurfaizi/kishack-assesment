@@ -20,6 +20,7 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $articles = Article::query()
+            ->with(['category'])
             ->when($request->filled('search'), fn($q) => $q->where('title', 'LIKE', "%{$request->get('search')}%"))
             ->latest()
             ->paginate($request->get('limit'));

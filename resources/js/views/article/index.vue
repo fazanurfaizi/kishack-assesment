@@ -2,6 +2,14 @@
     <div>
         <div class="row mb-3">
             <div class="col-7">
+                <el-button
+                    v-if="multipleSelection.length > 0"
+                    :icon="Delete"
+                    circle
+                    class="mx-2 text-danger bg-transparent border-0"
+                    @click="handleDelete"
+                />
+
                 <el-input
                     v-model="searchQuery"
                     placeholder="Search"
@@ -15,6 +23,7 @@
                 <button
                     class="btn btn-blue-gradient w-25"
                     type="button"
+                    @click="createArticle"
                 >
                     <span class="text-sm">
                         + Add New
@@ -38,20 +47,25 @@
                     <el-button
                         type="primary"
                         size="small"
-                        @click.prevent="detailRow(scope.row)"
+                        @click.prevent="editRow(scope.row)"
                         :icon="EditPen"
                     />
                     <el-button
                         type="primary"
                         size="small"
-                        @click.prevent="deleteRow(scope.row)"
-                        :icon="EditPen"
+                        @click.prevent="detailRow(scope.row)"
+                        :icon="View"
                     />
                 </template>
             </el-table-column>
             <el-table-column prop="title" label="Title Article" sortable />
-            <el-table-column prop="category" label="Categories" sortable />
-            <el-table-column prop="date" label="Created date" sortable />
+            <el-table-column prop="cateogry" label="Categories" sortable>
+                <template #default="scope">
+                    <span>
+                        {{ scope.row.category.name }}
+                    </span>
+                </template>
+            </el-table-column>
         </el-table>
 
         <div class="d-flex justify-content-between">
@@ -60,13 +74,20 @@
                 layout="prev, pager, next"
                 v-model:currentPage="currentPage"
                 v-model:page-size="pageSize"
-                :page-sizes="[10, 25, 50]"
-                :total="1000"
+                :page-sizes="[5, 10, 25, 50]"
+                :total="totalData"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
             />
             <div class="px-2">
-                <el-select v-model="pageSize" class="m-2" placeholder="Select" size="large" style="width: 75px;">
+                <el-select
+                    v-model="pageSize"
+                    class="m-2"
+                    placeholder="Select"
+                    size="large"
+                    @change="handleSizeChange"
+                    style="width: 75px;"
+                >
                     <el-option
                         v-for="item in pageOptions"
                         :key="item"
@@ -74,19 +95,38 @@
                         :value="item"
                     />
                 </el-select>
-                <span class="text-gray">Showing 1-5 of 10</span>
+                <span class="text-gray">Showing {{`${meta.from}-${meta.to}`}} of {{ pageSize }}</span>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { Search, Refresh, EditPen } from '@element-plus/icons-vue'
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { Search, Refresh, EditPen, View, Delete } from '@element-plus/icons-vue'
+import axios from 'axios'
+import { debounce, formatDate } from '@/utils/index.js'
 
 export default {
-    name: 'list-articles',
+    name: 'articles',
     setup() {
+        const router = useRouter()
+
+        const loading = ref(false)
+
+        const tableData = ref([])
+
+        const detailData = ref(null)
+
+        const totalData = ref(0)
+
+        const meta = ref({
+            from: 0,
+            to: 0
+        })
+
         const multipleTableRef = ref(null)
 
         const multipleSelection = ref([])
@@ -109,69 +149,132 @@ export default {
 
         const currentPage = ref(1)
 
-        const pageSize = ref(10)
+        const pageSize = ref(5)
 
-        const pageOptions = [10, 25, 50]
+        const pageOptions = [5, 10, 25, 50]
 
         const handleSizeChange = (val) => {
-            console.log(`${val} items per page`)
+            pageSize.value = val
+            handleGetArticles()
         }
 
         const handleCurrentChange = (val) => {
-            console.log(`current page: ${val}`)
+            currentPage.value = val
+            handleGetArticles()
         }
 
-        const detailRow = (row) => {
-            console.log(row.id)
+        const handleGetArticles = async () => {
+            loading.value = true
+            await axios.get('/sanctum/csrf-cookie').then(async () => {
+                await axios.get('/api/articles', {
+                    params: {
+                        search: searchQuery.value,
+                        limit: pageSize.value,
+                        page: currentPage.value
+                    }
+                })
+                    .then((response) => {
+                        tableData.value = response.data.data.data
+                        totalData.value = response.data.data.total
+                        meta.value.from = response.data.data.from ?? 0
+                        meta.value.to = response.data.data.to ?? 0
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                    .finally(() => {
+                        loading.value = false
+                    })
+            })
         }
 
-        const deleteRow = (row) => {
-            console.log(row)
+        const createArticle = () => {
+            router.push({ name: 'create-articles' })
         }
 
-        const tableData = [
-            {
-                id: 1,
-                date: '2016-05-03',
-                title: 'Tom',
-                category: 'News'
-            },
-            {
-                id: 2,
-                date: '2016-05-02',
-                title: 'Tom',
-                category: 'News'
-            },
-            {
-                id: 3,
-                date: '2016-05-04',
-                title: 'Tom',
-                category: 'News'
-            },
-            {
-                id: 4,
-                date: '2016-05-01',
-                title: 'Tom',
-                category: 'News'
-            },
-        ]
+        const handleDelete = async () => {
+            loading.value = true
+            const ids = multipleSelection.value.map((value) => value.id)
+            await axios.get('/sanctum/csrf-cookie').then(async () => {
+                await axios.patch(`/api/articles`, {
+                    ids: ids
+                })
+                    .then((response) => {
+                        handleGetArticles()
+                        ElMessage({
+                            showClose: true,
+                            message: response.data.message,
+                            type: 'success',
+                        })
+                    })
+                    .catch((error) => {
+                        ElMessage({
+                            showClose: true,
+                            message: 'error',
+                            type: 'success',
+                        })
+                    })
+                    .finally(() => {
+                        loading.value = false
+                    })
+            })
+        }
+
+        const detailRow = async (row) => {
+            loading.value = true
+            await axios.get('/sanctum/csrf-cookie').then(async () => {
+                await axios.get(`/api/articles/${row.id}`)
+                    .then((response) => {
+                        detailData.value = response.data.data
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                    .finally(() => {
+                        loading.value = false
+                        detailVisible.value = true
+                    })
+            })
+        }
+
+        onMounted(() => {
+            handleGetArticles()
+        })
+
+        watch(searchQuery, (value) => {
+            searchQuery.value = value
+            let returnedFunction = debounce(function() {
+                handleGetArticles()
+            }, 250);
+
+            returnedFunction()
+        })
 
         return {
             multipleTableRef,
+            multipleSelection,
             tableData,
+            totalData,
+            detailData,
             searchQuery,
             currentPage,
             pageOptions,
             pageSize,
+            loading,
+            meta,
+            createArticle,
+            handleDelete,
             handleSelectionChange,
             toggleSelection,
             handleCurrentChange,
             handleSizeChange,
             detailRow,
-            deleteRow,
             Search,
             Refresh,
-            EditPen
+            EditPen,
+            View,
+            Delete,
+            formatDate
         }
     }
 }
