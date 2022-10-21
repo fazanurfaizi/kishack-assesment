@@ -19,6 +19,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::query()
+            ->with(['role'])
             ->when($request->filled('search'), fn($q) => $q->where('name', 'LIKE', "%{$request->get('search')}%"))
             ->latest()
             ->paginate($request->get('limit'));
@@ -62,6 +63,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $user->load(['role']);
+
         return response()->json([
             'data' => $user
         ]);
