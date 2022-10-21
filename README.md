@@ -1,5 +1,7 @@
 # Kishack Assessment
 
+![Kishack Assessment](./design/erd.png)
+
 ## Getting started
 
 ### Installing
