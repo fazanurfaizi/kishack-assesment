@@ -3,7 +3,6 @@
 ## Getting started
 
 ### Installing
-#### Manual
 
 ```bash
 # Clone the project and run composer
