@@ -128,8 +128,8 @@ const constantRoutes = [
                 }
             },
             {
-                name: 'articles',
-                path: 'articles/:id/edit',
+                name: 'edit-articles',
+                path: 'articles/:id(\\d+)/edit',
                 component: () => import('@/views/article/edit.vue'),
                 meta: {
                     title: 'Edit Article'

@@ -1,9 +1,7 @@
 <template>
     <div>
         <div class="form row mt-4">
-            <div class="form-group col-sm">
-                <input type="file" class="form-control" id="image" placeholder="Input your image" @change="handleImage" />
-            </div>
+            <ImageUpload @change="handleImage" :imageUrl="imageUrl" />
         </div>
 
         <div class="form row mt-4">
@@ -47,13 +45,19 @@
 
 <script>
 import axios from 'axios'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
+import ImageUpload from '../../components/ImageUpload.vue'
 
 export default {
-    name: 'create-articles',
+    name: 'edit-articles',
+    components: {
+        ImageUpload
+    },
     setup() {
         const router = useRouter()
+
+        const route = useRoute()
 
         const form = reactive({
             title: '',
@@ -61,6 +65,8 @@ export default {
             image: null,
             category_id: ''
         })
+
+        const imageUrl = ref('')
 
         const categories = ref([])
 
@@ -72,8 +78,19 @@ export default {
             })
         }
 
-        const handleImage = (e) => {
-            form.image = e.target.files[0]
+        const handleGetDetailArticle = async () => {
+            await axios.get('sanctum/csrf-cookie').then(async () => {
+                await axios.get(`/api/articles/${route.params.id}`).then((response) => {
+                    form.title = response.data.data.title
+                    form.content = response.data.data.content
+                    form.category_id = response.data.data.category_id
+                    imageUrl.value = response.data.data.image_url
+                })
+            })
+        }
+
+        const handleImage = (file) => {
+            form.image = file[0]
         }
 
         const handlePost = async () => {
@@ -81,14 +98,19 @@ export default {
             formData.append('title', form.title)
             formData.append('content', form.content)
             formData.append('category_id', form.category_id)
-            formData.append('image', form.image)
+
+            if(form.image !== null) {
+                formData.append('image', form.image)
+            }
+
+            formData.append('_method', 'PUT')
 
             await axios.get('sanctum/csrf-cookie').then(async () => {
-                await axios.post('/api/articles', formData)
+                await axios.post(`/api/articles/${route.params.id}`, formData)
                     .then((response) => {
                         ElMessage({
                             showClose: true,
-                            message: 'Article created successfully',
+                            message: 'Article updated successfully',
                             type: 'success',
                         })
                     })
@@ -101,10 +123,12 @@ export default {
 
         onMounted(() => {
             handleGetCategories()
+            handleGetDetailArticle()
         })
 
         return {
             form,
+            imageUrl,
             categories,
             handleImage,
             handlePost

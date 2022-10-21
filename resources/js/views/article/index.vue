@@ -47,13 +47,13 @@
                     <el-button
                         type="primary"
                         size="small"
-                        @click.prevent="editRow(scope.row)"
+                        @click="editArticle(scope.row)"
                         :icon="EditPen"
                     />
                     <el-button
                         type="primary"
                         size="small"
-                        @click.prevent="detailRow(scope.row)"
+                        @click="detailArticle(scope.row)"
                         :icon="View"
                     />
                 </template>
@@ -192,6 +192,14 @@ export default {
             router.push({ name: 'create-articles' })
         }
 
+        const editArticle = (row) => {
+            router.push({ name: 'edit-articles', params: { id: row.id } })
+        }
+
+        const detailArticle = (row) => {
+            router.push({ name: 'show-articles', params: { id: row.id } })
+        }
+
         const handleDelete = async () => {
             loading.value = true
             const ids = multipleSelection.value.map((value) => value.id)
@@ -216,23 +224,6 @@ export default {
                     })
                     .finally(() => {
                         loading.value = false
-                    })
-            })
-        }
-
-        const detailRow = async (row) => {
-            loading.value = true
-            await axios.get('/sanctum/csrf-cookie').then(async () => {
-                await axios.get(`/api/articles/${row.id}`)
-                    .then((response) => {
-                        detailData.value = response.data.data
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-                    .finally(() => {
-                        loading.value = false
-                        detailVisible.value = true
                     })
             })
         }
@@ -263,12 +254,13 @@ export default {
             loading,
             meta,
             createArticle,
+            editArticle,
+            detailArticle,
             handleDelete,
             handleSelectionChange,
             toggleSelection,
             handleCurrentChange,
             handleSizeChange,
-            detailRow,
             Search,
             Refresh,
             EditPen,

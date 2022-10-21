@@ -1,9 +1,7 @@
 <template>
     <form>
         <div class="form row mt-4">
-            <div class="form-group col-sm">
-                <input type="file" class="form-control" id="image" placeholder="Input your image" @change="handleImage" />
-            </div>
+            <ImageUpload @change="handleImage" />
         </div>
 
         <div class="form row mt-4">
@@ -49,67 +47,64 @@
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
+import ImageUpload from '../../components/ImageUpload.vue'
 
 export default {
-    name: 'create-articles',
+    name: "create-articles",
+    component: {
+        ImageUpload
+    },
     setup() {
-        const router = useRouter()
-
+        const router = useRouter();
         const form = reactive({
-            title: '',
-            content: '',
+            title: "",
+            content: "",
             image: null,
-            category_id: ''
-        })
-
-        const categories = ref([])
-
+            category_id: ""
+        });
+        const categories = ref([]);
         const handleGetCategories = async () => {
-            await axios.get('sanctum/csrf-cookie').then(async () => {
-                await axios.get('/api/categories').then((response) => {
-                    categories.value = response.data.data.data
-                })
-            })
-        }
-
-        const handleImage = (e) => {
-            form.image = e.target.files[0]
-        }
-
+            await axios.get("sanctum/csrf-cookie").then(async () => {
+                await axios.get("/api/categories").then((response) => {
+                    categories.value = response.data.data.data;
+                });
+            });
+        };
+        const handleImage = (file) => {
+            form.image = file[0];
+        };
         const handlePost = async () => {
-            const formData = new FormData()
-            formData.append('title', form.title)
-            formData.append('content', form.content)
-            formData.append('category_id', form.category_id)
-            formData.append('image', form.image)
-
-            await axios.get('sanctum/csrf-cookie').then(async () => {
-                await axios.post('/api/articles', formData)
+            const formData = new FormData();
+            formData.append("title", form.title);
+            formData.append("content", form.content);
+            formData.append("category_id", form.category_id);
+            formData.append("image", form.image);
+            await axios.get("sanctum/csrf-cookie").then(async () => {
+                await axios.post("/api/articles", formData)
                     .then((response) => {
-                        ElMessage({
-                            showClose: true,
-                            message: 'Article created successfully',
-                            type: 'success',
-                        })
-                    })
+                    ElMessage({
+                        showClose: true,
+                        message: "Article created successfully",
+                        type: "success",
+                    });
+                })
                     .catch((error) => {
-                        console.log(error)
-                    })
-                    .finally(() => router.push({ name: 'list-articles' }))
-            })
-        }
-
+                    console.log(error);
+                })
+                    .finally(() => router.push({ name: "list-articles" }));
+            });
+        };
         onMounted(() => {
-            handleGetCategories()
-        })
-
+            handleGetCategories();
+        });
         return {
             form,
             categories,
             handleImage,
             handlePost
-        }
-    }
+        };
+    },
+    components: { ImageUpload }
 }
 
 </script>
