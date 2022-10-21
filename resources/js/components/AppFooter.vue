@@ -1,18 +1,19 @@
 <template>
-    <CFooter>
-        <div>
-            <a href="https://coreui.io" target="_blank">Faza</a>
-            <span class="ms-1">&copy; {{ new Date().getFullYear() }} Faza</span>
+    <CFooter class="mx-5">
+        <div class="d-flex justify-content-between">
+            <span class="ms-1">&copy; <b>{{ new Date().getFullYear() }}</b> Copyright Mitra Hino</span>
         </div>
-        <div class="ms-auto">
-            <span class="me-1" target="_blank">Powered by</span>
-            <a href="https://coreui.io/vue">Faza</a>
-        </div>
+        <Metamine />
     </CFooter>
 </template>
 
 <script>
+import Metamine from '@/assets/images/metamine.svg?component'
+
 export default {
     name: 'AppFooter',
+    components: {
+        Metamine
+    }
 }
 </script>

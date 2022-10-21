@@ -15,6 +15,7 @@
                 <button
                     class="btn btn-blue-gradient w-25"
                     type="button"
+                    @click="formVisible = true"
                 >
                     <span class="text-sm">
                         + Add New
@@ -77,10 +78,29 @@
             </div>
         </div>
     </div>
+
+    <el-dialog v-model="formVisible" title="Add Roles">
+        <div class="row">
+            <div class="col-6 form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Input role name">
+            </div>
+            <div class="col-6 form-group">
+                <label for="slug">Slug</label>
+                <input type="text" class="form-control" id="slug" placeholder="Input Slug">
+            </div>
+        </div>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="formVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="formVisible = false">Confirm</el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { Search, Refresh, EditPen } from '@element-plus/icons-vue'
 
 export default {
@@ -120,6 +140,13 @@ export default {
             console.log(`current page: ${val}`)
         }
 
+        const formVisible = ref(false)
+
+        const form = reactive({
+            name: '',
+            slug: '',
+        })
+
         const detailRow = (row) => {
             console.log(row.id)
         }
@@ -153,6 +180,8 @@ export default {
             currentPage,
             pageOptions,
             pageSize,
+            formVisible,
+            form,
             handleSelectionChange,
             toggleSelection,
             handleCurrentChange,
