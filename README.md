@@ -33,7 +33,3 @@ php artisan serve
 ```
 
 Open http://localhost:8000 to access kishack-assesment
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
