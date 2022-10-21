@@ -10,6 +10,12 @@
 # Clone the project and run composer
 cd kishack-assesment
 
+# Install laravel dependencies
+composer install
+
+# copy .env.example to .env
+cp .env.example .env
+
 # Migration and DB seeder (after changing your DB settings in .env)
 php artisan migrate --seed
 
@@ -27,7 +33,3 @@ php artisan serve
 ```
 
 Open http://localhost:8000 to access kishack-assesment
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
