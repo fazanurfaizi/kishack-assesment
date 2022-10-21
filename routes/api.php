@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'profile'], function () {
         Route::get('/', [ProfileController::class, 'show']);
+        Route::get('/articles', [ProfileController::class, 'articles']);
     });
 
     Route::group(['prefix' => 'roles'], function() {

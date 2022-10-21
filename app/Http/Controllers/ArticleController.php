@@ -22,6 +22,7 @@ class ArticleController extends Controller
         $articles = Article::query()
             ->with(['category'])
             ->when($request->filled('search'), fn($q) => $q->where('title', 'LIKE', "%{$request->get('search')}%"))
+            ->when($request->filled('category_id'), fn($q) => $q->where('category_id', $request->get('category_id')))
             ->latest()
             ->paginate($request->get('limit'));
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,6 +23,18 @@ class ProfileController extends Controller
 
         return response()->json([
             'data' => $user
+        ], JsonResponse::HTTP_OK);
+    }
+
+    public function articles()
+    {
+        $articles = Article::query()
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'data' => $articles
         ], JsonResponse::HTTP_OK);
     }
 }
