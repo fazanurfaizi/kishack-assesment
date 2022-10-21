@@ -15,20 +15,14 @@
             <CHeaderNav>
                 <CNavItem>
                     <CNavLink href="#">
-                        <CIcon class="mx-2 text-white" icon=" cil-language" size="lg" />
+                        <span class="text-white">EN</span>
                     </CNavLink>
                 </CNavItem>
                 <CNavItem>
                     <CNavLink href="#">
-                        <!-- <BellIcon class="text-white" /> -->
                         <CIcon class="mx-2 text-white" icon="cil-bell" size="lg" />
                     </CNavLink>
                 </CNavItem>
-                <!-- <CNavItem>
-                    <CNavLink href="#">
-                        <CIcon class="mx-2 text-white" icon="cil-user" size="lg" />
-                    </CNavLink>
-                </CNavItem> -->
                 <AppAccountDropdown />
             </CHeaderNav>
         </CContainer>

@@ -9,7 +9,7 @@ export default [
         component: 'CNavGroup',
         name: 'User Management',
         to: '#',
-        icon: 'cil-puzzle',
+        icon: 'cil-people',
         items: [
             {
                 component: 'CNavItem',
@@ -32,7 +32,7 @@ export default [
         component: 'CNavGroup',
         name: 'Master Data',
         to: '#',
-        icon: 'cil-puzzle',
+        icon: 'cil-book',
         items: [
             {
                 component: 'CNavItem',
