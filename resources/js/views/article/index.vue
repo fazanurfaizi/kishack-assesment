@@ -7,7 +7,7 @@
                     :icon="Delete"
                     circle
                     class="mx-2 text-danger bg-transparent border-0"
-                    @click="handleDelete"
+                    @click="dialogVisible = true"
                 />
 
                 <el-input
@@ -99,6 +99,22 @@
             </div>
         </div>
     </div>
+
+    <el-dialog
+        v-model="dialogVisible"
+        title="Warning"
+        width="30%"
+    >
+        <span>Are you sure you want to delete items ?</span>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogVisible = false">Cancel</el-button>
+                <el-button type="danger" @click="handleDelete()">
+                    Confirm
+                </el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 
 <script>
@@ -133,6 +149,8 @@ export default {
         const multipleTableRef = ref(null)
 
         const multipleSelection = ref([])
+
+        const dialogVisible = ref(false)
 
         const toggleSelection = (rows) => {
             if (rows) {
@@ -227,6 +245,7 @@ export default {
                     })
                     .finally(() => {
                         loading.value = false
+                        dialogVisible.value = false
                     })
             })
         }
@@ -274,7 +293,8 @@ export default {
             EditPen,
             View,
             Delete,
-            formatDate
+            formatDate,
+            dialogVisible
         }
     }
 }
