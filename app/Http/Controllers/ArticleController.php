@@ -66,8 +66,14 @@ class ArticleController extends Controller
     {
         $article->load(['category', 'user']);
 
+        $recommendations = Article::query()
+            ->where('category_id', $article->category_id)
+            ->where('user_id', '!=', Auth::id())
+            ->get();
+
         return response()->json([
-            'data' => $article
+            'article' => $article,
+            'recommendations' => $recommendations
         ]);
     }
 
