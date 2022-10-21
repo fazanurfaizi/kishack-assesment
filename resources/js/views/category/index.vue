@@ -227,8 +227,8 @@ export default {
                     .then((response) => {
                         tableData.value = response.data.data.data
                         totalData.value = response.data.data.total
-                        meta.value.from = response.data.data.from
-                        meta.value.to = response.data.data.to
+                        meta.value.from = response.data.data.from ?? 0
+                        meta.value.to = response.data.data.to ?? 0
                     })
                     .catch((error) => {
                         console.log(error)
