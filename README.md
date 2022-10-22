@@ -32,4 +32,8 @@ npm run production
 php artisan serve
 ```
 
+### User access
+email: test@example.com
+password: password
+
 Open http://localhost:8000 to access kishack-assesment
