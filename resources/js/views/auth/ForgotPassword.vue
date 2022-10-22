@@ -30,7 +30,7 @@
 
             <div class="col-12">
                 <div class="d-flex justify-content-center">
-                    <button class="btn btn-blue-gradient btn-lg w-25" type="submit">
+                    <button class="btn btn-blue-gradient btn-lg w-50" type="submit">
                         <span class="text-sm">
                             Verification
                         </span>

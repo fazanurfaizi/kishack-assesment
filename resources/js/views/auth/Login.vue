@@ -74,7 +74,7 @@
             <div class="col-12 mb-5">
                 <div class="d-flex justify-content-center">
                     <button
-                        class="btn btn-blue-gradient btn-lg w-25"
+                        class="btn btn-blue-gradient btn-lg w-50"
                         type="submit"
                         @click.prevent="handleLogin()"
                         :disabled="loading"
