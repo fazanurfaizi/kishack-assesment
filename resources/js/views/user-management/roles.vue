@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row mb-3">
-            <div class="col-7">
+            <div class="col-md-7 col-12">
                 <el-button
                     v-if="multipleSelection.length > 0"
                     :icon="Delete"
@@ -14,12 +14,12 @@
                     v-model="searchQuery"
                     placeholder="Search"
                     :suffix-icon="Search"
-                    style="width: 30%;"
+                    style="width: 80%;"
                 />
 
                 <el-button :icon="Refresh" circle class="mx-2 text-primary bg-transparent border-0" />
             </div>
-            <div class="col-5 d-flex justify-content-end">
+            <div class="col-md-5 col-12 d-flex justify-content-end">
                 <button
                     class="btn btn-blue-gradient w-25"
                     type="button"
