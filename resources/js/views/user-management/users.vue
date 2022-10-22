@@ -63,7 +63,7 @@
             <el-table-column prop="role" label="Role" sortable>
                 <template #default="scope">
                     <span>
-                        {{ scope.row.role.name }}
+                        {{ scope.row?.role?.name }}
                     </span>
                 </template>
             </el-table-column>
@@ -551,7 +551,8 @@ export default {
             EditPen,
             View,
             Delete,
-            formatDate
+            formatDate,
+            dialogVisible
         }
     }
 }

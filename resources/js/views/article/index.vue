@@ -62,7 +62,7 @@
             <el-table-column prop="cateogry" label="Categories" sortable>
                 <template #default="scope">
                     <span>
-                        {{ scope.row.category.name }}
+                        {{ scope.row?.category?.name }}
                     </span>
                 </template>
             </el-table-column>
