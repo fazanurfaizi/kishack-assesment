@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,6 +19,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        Auth::user()->can('list-users');
+
         $users = User::query()
             ->with(['role'])
             ->when($request->filled('search'), fn($q) => $q->where('name', 'LIKE', "%{$request->get('search')}%"))
@@ -37,6 +40,8 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        Auth::user()->can('create-users');
+
         if($request->hasFile('image')) {
             $path = Storage::disk('public')->put('users', $request->file('image'));
         }
@@ -63,6 +68,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        Auth::user()->can('show-users');
+
         $user->load(['role']);
 
         return response()->json([
@@ -79,6 +86,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        Auth::user()->can('update-users');
+
         if($request->hasFile('image')) {
             $path = Storage::disk('public')->put('users', $request->file('image'));
             $user->forceFill([
@@ -114,6 +123,8 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
+        Auth::user()->can('delete-users');
+
         User::query()
             ->whereIn('id', $request->post('ids'))
             ->delete();

@@ -19,6 +19,8 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
+        Auth::user()->can('list-articles');
+
         $articles = Article::query()
             ->with(['category'])
             ->when($request->filled('search'), fn($q) => $q->where('title', 'LIKE', "%{$request->get('search')}%"))
@@ -39,6 +41,8 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
+        Auth::user()->can('create-articles');
+
         if($request->hasFile('image')) {
             $path = Storage::disk('public')->put('articles', $request->file('image'));
         }
@@ -64,6 +68,8 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
+        Auth::user()->can('show-articles');
+
         $article->load(['category', 'user']);
 
         $recommendations = Article::query()
@@ -86,6 +92,8 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
+        Auth::user()->can('update-articles');
+
         if($request->hasFile('image')) {
             $path = Storage::disk('public')->put('articles', $request->file('image'));
             $article->forceFill([
@@ -114,6 +122,8 @@ class ArticleController extends Controller
      */
     public function destroy(Request $request)
     {
+        Auth::user()->can('delete-articles');
+
         Article::query()
             ->whereIn('id', $request->input('ids'))
             ->delete();
